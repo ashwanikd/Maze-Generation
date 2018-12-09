@@ -5,11 +5,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 
-public class Kruskal {
+public class TSP {
     Frame f=new Frame("Maze Generator");
-    Kruskal.MyCanvas c=new Kruskal.MyCanvas();
-    Kruskal(){
-        c.setBackground(Color.BLUE);
+    TSP.MyCanvas c=new TSP.MyCanvas();
+    TSP(){
+        c.setBackground(Color.BLACK);
         f.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent windowevent) {
                 System.exit(0);
@@ -21,22 +21,21 @@ public class Kruskal {
         f.add(c);
         f.setVisible(true);
         c.startRendering();
-        c.dfs();
+        c.DFS();
         c.stopRendering();
     }
     class MyCanvas extends Canvas{
         int h,o;
-        Kruskal.MyCanvas.paintagain p;
+        TSP.MyCanvas.paintagain p;
 
         LinkedList<Point> visited = new LinkedList<Point>();
         void startRendering() {
-            p=new Kruskal.MyCanvas.paintagain();
+            p=new TSP.MyCanvas.paintagain();
         }
         void stopRendering() {
             p.stop();
         }
         boolean[][] vector=new boolean[100][70];
-        LinkedList<Edge> edges = new LinkedList<Edge>();
         Graph[][] graph=new Graph[50][35];
         Graph[][] resgraph=new Graph[50][35];
         MyCanvas() {
@@ -51,168 +50,126 @@ public class Kruskal {
                     resgraph[i][j]=new Graph(i,j);
                     if(i==0) {
                         if(j==0) {
-                            edges.add(new Edge(new Point(i,j),new Point(1,0)));
                             graph[i][j].addVertex(new Point(1,0));
-                            edges.add(new Edge(new Point(i,j),new Point(0,1)));
                             graph[i][j].addVertex(new Point(0,1));
                         }else if(j==34) {
-                            edges.add(new Edge(new Point(i,j),new Point(1,34)));
                             graph[i][j].addVertex(new Point(1,34));
-                            edges.add(new Edge(new Point(i,j),new Point(0,33)));
                             graph[i][j].addVertex(new Point(0,33));
                         }else {
-                            edges.add(new Edge(new Point(i,j),new Point(0,j-1)));
                             graph[i][j].addVertex(new Point(0,j-1));
-                            edges.add(new Edge(new Point(i,j),new Point(0,j+1)));
                             graph[i][j].addVertex(new Point(0,j+1));
-                            edges.add(new Edge(new Point(i,j),new Point(1,j)));
                             graph[i][j].addVertex(new Point(1,j));
                         }
                     }else if(i==49) {
                         if(j==0) {
-                            edges.add(new Edge(new Point(i,j),new Point(48,0)));
                             graph[i][j].addVertex(new Point(48,0));
-                            edges.add(new Edge(new Point(i,j),new Point(49,1)));
                             graph[i][j].addVertex(new Point(49,1));
                         }else if(j==34) {
-                            edges.add(new Edge(new Point(i,j),new Point(49,33)));
                             graph[i][j].addVertex(new Point(49,33));
-                            edges.add(new Edge(new Point(i,j),new Point(48,34)));
                             graph[i][j].addVertex(new Point(48,34));
                         }else {
-                            edges.add(new Edge(new Point(i,j),new Point(49,j-1)));
                             graph[i][j].addVertex(new Point(49,j-1));
-                            edges.add(new Edge(new Point(i,j),new Point(49,j+1)));
                             graph[i][j].addVertex(new Point(49,j+1));
-                            edges.add(new Edge(new Point(i,j),new Point(48,j)));
                             graph[i][j].addVertex(new Point(48,j));
                         }
                     }else if(j==0) {
                         if(i==0) {
-                            edges.add(new Edge(new Point(i,j),new Point(1,0)));
                             graph[i][j].addVertex(new Point(1,0));
-                            edges.add(new Edge(new Point(i,j),new Point(0,1)));
                             graph[i][j].addVertex(new Point(0,1));
                         }else if(i==49) {
-                            edges.add(new Edge(new Point(i,j),new Point(48,0)));
                             graph[i][j].addVertex(new Point(48,0));
-                            edges.add(new Edge(new Point(i,j),new Point(49,1)));
                             graph[i][j].addVertex(new Point(49,1));
                         }else {
-                            edges.add(new Edge(new Point(i,j),new Point(i-1,j)));
                             graph[i][j].addVertex(new Point(i-1,j));
-                            edges.add(new Edge(new Point(i,j),new Point(i+1,j)));
                             graph[i][j].addVertex(new Point(i+1,j));
-                            edges.add(new Edge(new Point(i,j),new Point(i,j+1)));
                             graph[i][j].addVertex(new Point(i,j+1));
                         }
                     }else if(j==34) {
                         if(i==0) {
-                            edges.add(new Edge(new Point(i,j),new Point(1,34)));
                             graph[i][j].addVertex(new Point(1,34));
-                            edges.add(new Edge(new Point(i,j),new Point(0,33)));
                             graph[i][j].addVertex(new Point(0,33));
                         }else if(i==49) {
-                            edges.add(new Edge(new Point(i,j),new Point(49,33)));
                             graph[i][j].addVertex(new Point(49,33));
-                            edges.add(new Edge(new Point(i,j),new Point(48,34)));
                             graph[i][j].addVertex(new Point(48,34));
                         }else {
-                            edges.add(new Edge(new Point(i,j),new Point(i-1,j)));
                             graph[i][j].addVertex(new Point(i-1,j));
-                            edges.add(new Edge(new Point(i,j),new Point(i+1,j)));
                             graph[i][j].addVertex(new Point(i+1,j));
-                            edges.add(new Edge(new Point(i,j),new Point(i,j-1)));
                             graph[i][j].addVertex(new Point(i,j-1));
                         }
                     }else {
-                        edges.add(new Edge(new Point(i,j),new Point(i,j-1)));
                         graph[i][j].addVertex(new Point(i,j-1));
-                        edges.add(new Edge(new Point(i,j),new Point(i-1,j)));
                         graph[i][j].addVertex(new Point(i-1,j));
-                        edges.add(new Edge(new Point(i,j),new Point(i,j+1)));
                         graph[i][j].addVertex(new Point(i,j+1));
-                        edges.add(new Edge(new Point(i,j),new Point(i+1,j)));
                         graph[i][j].addVertex(new Point(i+1,j));
                     }
                 }
             }
         }
-        boolean allvisited(){
-            for(int i=0;i<50;i++){
-                for(int j=0;j<35;j++){
-                    if(!vector[i*2][j*2]){
-                        return false;
-                    }
+        void DFS(){
+            dfs(24,17);
+            vector=new boolean[100][70];
+            c.repaint();
+            inorder(24,17);
+        }
+        void dfs(int x,int y) {
+            if(visited.size()>=1749) {
+                return;
+            }
+            vector[x*2][y*2]=true;
+            visited.add(new Point(x,y));
+            LinkedList<Point> aa = new LinkedList<Point>();
+            LinkedList<Point> nv=new LinkedList<Point>();
+            for(int i=0;i<visited.size();i++){
+                LinkedList<Point> l = getNonVisited(visited.get(i).x,visited.get(i).y);
+                for(int j=0;j<l.size();j++){
+                    nv.add(new Point(l.get(j).x,l.get(j).y));
+                    aa.add(new Point(visited.get(i).x,visited.get(i).y));
                 }
             }
-            return true;
+            int r=genRandom(nv.size()-1);
+            int a=nv.get(r).x;
+            int b=nv.get(r).y;
+            int x1=aa.get(r).x;
+            int y1=aa.get(r).y;
+            resgraph[x1][y1].addVertex(new Point(a,b));
+            resgraph[a][b].addVertex(new Point(x1,y1));
+            //try {
+            //    Thread.sleep(7);
+            //} catch (InterruptedException e) {
+            //    e.printStackTrace();
+            //}
+            if(x1==a) {
+                vector[x1*2][y1+b]=true;
+            }else {
+                vector[x1+a][y1*2]=true;
+            }
+            h=a*2;o=b*2;
+            dfs(a,b);
+            dfs(x,y);
         }
-        void dfs() {
-            while(!allvisited()){
-                int r=genRandom(edges.size()-1);
-                if(!checkequal(getUnionSet(edges.get(r).p1),getUnionSet(edges.get(r).p2))){
-                    try {
-                        Thread.sleep(15);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    int x1 = edges.get(r).p1.x;
-                    int y1 = edges.get(r).p1.y;
-                    int x2 = edges.get(r).p2.x;
-                    int y2 = edges.get(r).p2.y;
-                    vector[x1*2][y1*2] = true;
-                    vector[x2*2][y2*2] = true;
-                    if(x1==x2) {
-                        vector[x1*2][y1+y2]=true;
-                        h = x1*2;
-                        o = y1+y2;
-                    }else {
-                        vector[x1+x2][y1*2]=true;
-                        h = x1+x2;
-                        o = y1*2;
-                    }
-                    resgraph[x1][y1].addVertex(new Point(x2,y2));
-                    resgraph[x2][y2].addVertex(new Point(x1,y1));
-                    edges.remove(r);
+
+        void inorder(int x,int y){
+            vector[x*2][y*2] = true;
+            for(int i=0;i<resgraph[x][y].getSize();i++){
+                Point p = resgraph[x][y].getVertex(i);
+
+                if(!vector[p.x*2][p.y*2]){
+                    inorder(p.x,p.y);
                 }
 
-            }
-        }
+                if(x==p.x){
+                    vector[p.x*2][p.y+y] = true;
+                }else {
+                    vector[p.x+x][p.y*2] = true;
+                }
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
-        boolean checkequal(LinkedList<Point> l1,LinkedList<Point> l2){
-            for(int i=0;i<l1.size();i++){
-                if(l2.contains(l1.get(i))){
-                    return true;
-                }
+                h=p.x*2;o=p.y*2;
             }
-            return false;
-        }
-        LinkedList<Point> v1 = new LinkedList<Point>();
-        LinkedList<Point> getUnionSet(Point point){
-            v1.clear();
-            LinkedList<Point> l = getUnionSet1(point);
-            return l;
-        }
-        LinkedList<Point> getUnionSet1(Point point){
-            v1.add(point);
-            LinkedList<Point> l = new LinkedList<Point>();
-            LinkedList<Point> temp,temp1;
-            for(int i=0;i<resgraph[point.x][point.y].getSize();i++){
-                temp = resgraph[point.x][point.y].getList();
-                for(int j=0;j<temp.size();j++){
-                    l.add(temp.get(j));
-                    if(!v1.contains(temp.get(i))){
-                        temp1 = getUnionSet1(temp.get(i));
-                        for(int k=0;k<temp1.size();k++){
-                            if(!l.contains(temp1.get(k))){
-                                l.add(temp1.get(k));
-                            }
-                        }
-                    }
-                }
-            }
-            return l;
         }
 
         class paintagain extends Thread{
@@ -224,7 +181,7 @@ public class Kruskal {
                     try {
                         sleep(10);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
+
                         e.printStackTrace();
                     }
                     Graphics g = c.getGraphics();
@@ -249,10 +206,15 @@ public class Kruskal {
             g2.setColor(Color.GREEN);
             for(int i=0;i<100;i++) {
                 for (int j = 0; j < 70; j++) {
-                    if (vector[i][j]) {
+                    if (vector[i][j] && (i%2!=0 || j%2!=0)) {
                         if (h == i && j == o)
                             g2.setColor(Color.RED);
                         else g2.setColor(Color.GREEN);
+                        g2.fillRect(i * 10, j * 10, 10, 10);
+                    }else if(vector[i][j]){
+                        if (h == i && j == o)
+                            g2.setColor(Color.RED);
+                        else g2.setColor(Color.WHITE);
                         g2.fillRect(i * 10, j * 10, 10, 10);
                     }
                 }
@@ -260,7 +222,7 @@ public class Kruskal {
         }
     }
     public static void main(String args[]) {
-        new Kruskal();
+        new TSP();
     }
 
 }

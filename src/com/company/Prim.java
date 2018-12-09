@@ -9,7 +9,7 @@ public class Prim {
     Frame f=new Frame("Maze Generator");
     Prim.MyCanvas c=new Prim.MyCanvas();
     Prim(){
-        c.setBackground(Color.WHITE);
+        c.setBackground(Color.BLUE);
         f.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent windowevent) {
                 System.exit(0);
@@ -168,13 +168,13 @@ public class Prim {
         }
         public void paint(Graphics g) {
             Graphics2D g2=(Graphics2D)g;
-            g2.setColor(Color.BLACK);
+            g2.setColor(Color.GREEN);
             for(int i=0;i<100;i++) {
                 for (int j = 0; j < 70; j++) {
                     if (vector[i][j]) {
                         if (h == i && j == o)
                             g2.setColor(Color.RED);
-                        else g2.setColor(Color.BLACK);
+                        else g2.setColor(Color.GREEN);
                         g2.fillRect(i * 10, j * 10, 10, 10);
                     }
                 }
