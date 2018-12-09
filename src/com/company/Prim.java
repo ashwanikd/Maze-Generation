@@ -27,6 +27,8 @@ public class Prim {
     class MyCanvas extends Canvas{
         int h,o;
         Prim.MyCanvas.paintagain p;
+
+        LinkedList<Point> visited = new LinkedList<Point>();
         void startRendering() {
             p=new Prim.MyCanvas.paintagain();
         }
@@ -102,23 +104,34 @@ public class Prim {
             }
         }
         void dfs(int x,int y) {
-            vector[x*2][y*2]=true;
-            LinkedList<Point> nv=getNonVisited(x,y);
-            if(nv.size()==0) {
+            if(visited.size()>=1749) {
                 return;
+            }
+            vector[x*2][y*2]=true;
+            visited.add(new Point(x,y));
+            LinkedList<Point> aa = new LinkedList<Point>();
+            LinkedList<Point> nv=new LinkedList<Point>();
+            for(int i=0;i<visited.size();i++){
+                LinkedList<Point> l = getNonVisited(visited.get(i).x,visited.get(i).y);
+                for(int j=0;j<l.size();j++){
+                    nv.add(new Point(l.get(j).x,l.get(j).y));
+                    aa.add(new Point(visited.get(i).x,visited.get(i).y));
+                }
             }
             int r=genRandom(nv.size()-1);
             int a=nv.get(r).x;
             int b=nv.get(r).y;
+            int x1=aa.get(r).x;
+            int y1=aa.get(r).y;
             try {
-                Thread.sleep(15);
+                Thread.sleep(7);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(x==a) {
-                vector[x*2][y+b]=true;
+            if(x1==a) {
+                vector[x1*2][y1+b]=true;
             }else {
-                vector[x+a][y*2]=true;
+                vector[x1+a][y1*2]=true;
             }
             h=a*2;o=b*2;
             dfs(a,b);
@@ -168,4 +181,8 @@ public class Prim {
             }
         }
     }
+    public static void main(String args[]) {
+        new Prim();
+    }
+
 }
