@@ -1,5 +1,8 @@
 package com.company;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
+import java.net.URL;
 import java.util.*;
 import java.awt.event.*;
 public class DFS {
@@ -98,6 +101,8 @@ public class DFS {
                 }
             }
         }
+        URL url = getClass().getResource("beep.wav");
+        AudioClip clip = Applet.newAudioClip(url);
         void dfs(int x,int y) {
             vector[x*2][y*2]=true;
             LinkedList<Point> nv=getNonVisited(x,y);
@@ -108,7 +113,7 @@ public class DFS {
             int a=nv.get(r).x;
             int b=nv.get(r).y;
             try {
-                Thread.sleep(15);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -117,6 +122,7 @@ public class DFS {
             }else {
                 vector[x+a][y*2]=true;
             }
+            clip.play();
             h=a*2;o=b*2;
             dfs(a,b);
             dfs(x,y);

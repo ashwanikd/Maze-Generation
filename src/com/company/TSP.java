@@ -1,8 +1,11 @@
 package com.company;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.LinkedList;
 
 public class TSP {
@@ -147,7 +150,8 @@ public class TSP {
             dfs(a,b);
             dfs(x,y);
         }
-
+        URL url = getClass().getResource("beep.wav");
+        AudioClip clip = Applet.newAudioClip(url);
         void inorder(int x,int y){
             vector[x*2][y*2] = true;
             for(int i=0;i<resgraph[x][y].getSize();i++){
@@ -162,6 +166,7 @@ public class TSP {
                 }else {
                     vector[p.x+x][p.y*2] = true;
                 }
+                clip.play();
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {

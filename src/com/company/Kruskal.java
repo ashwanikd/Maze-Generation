@@ -1,8 +1,11 @@
 package com.company;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.LinkedList;
 
 public class Kruskal {
@@ -148,12 +151,14 @@ public class Kruskal {
             }
             return true;
         }
+        URL url = getClass().getResource("beep.wav");
+        AudioClip clip = Applet.newAudioClip(url);
         void dfs() {
             while(!allvisited()){
                 int r=genRandom(edges.size()-1);
                 if(!checkequal(getUnionSet(edges.get(r).p1),getUnionSet(edges.get(r).p2))){
                     try {
-                        Thread.sleep(15);
+                        Thread.sleep(5);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -172,6 +177,8 @@ public class Kruskal {
                         h = x1+x2;
                         o = y1*2;
                     }
+                    clip.play();
+                    //Toolkit.getDefaultToolkit().beep();
                     resgraph[x1][y1].addVertex(new Point(x2,y2));
                     resgraph[x2][y2].addVertex(new Point(x1,y1));
                     edges.remove(r);

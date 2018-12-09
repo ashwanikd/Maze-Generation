@@ -1,8 +1,11 @@
 package com.company;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.LinkedList;
 
 public class Prim {
@@ -103,6 +106,8 @@ public class Prim {
                 }
             }
         }
+        URL url = getClass().getResource("beep.wav");
+        AudioClip clip = Applet.newAudioClip(url);
         void dfs(int x,int y) {
             if(visited.size()>=1749) {
                 return;
@@ -124,10 +129,12 @@ public class Prim {
             int x1=aa.get(r).x;
             int y1=aa.get(r).y;
             try {
-                Thread.sleep(7);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            clip.play();
+            //Toolkit.getDefaultToolkit().beep();
             if(x1==a) {
                 vector[x1*2][y1+b]=true;
             }else {
