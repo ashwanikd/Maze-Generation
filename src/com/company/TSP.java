@@ -113,6 +113,8 @@ public class TSP {
             vector=new boolean[100][70];
             c.repaint();
             inorder(24,17);
+            vector=new boolean[100][70];
+            traverseInorder();
         }
         void dfs(int x,int y) {
             if(visited.size()>=1749) {
@@ -152,8 +154,10 @@ public class TSP {
         }
         URL url = getClass().getResource("beep.wav");
         AudioClip clip = Applet.newAudioClip(url);
+        LinkedList<Point> io = new LinkedList<Point>();
         void inorder(int x,int y){
-            vector[x*2][y*2] = true;
+            io.add(new Point(x,y));
+            vector[x*2][y*2]= true;
             for(int i=0;i<resgraph[x][y].getSize();i++){
                 Point p = resgraph[x][y].getVertex(i);
 
@@ -161,19 +165,37 @@ public class TSP {
                     inorder(p.x,p.y);
                 }
 
-                if(x==p.x){
-                    vector[p.x*2][p.y+y] = true;
-                }else {
-                    vector[p.x+x][p.y*2] = true;
-                }
-                clip.play();
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
 
-                h=p.x*2;o=p.y*2;
+            }
+        }
+
+        void traverseInorder(){
+            for(int i=0;i<io.size()-1;i++){
+                Point p1 = io.get(i);
+                Point p2 = io.get(i+1);
+                if(p1.x!=p2.x && p1.y!=p2.y){
+                    Point p = io.remove(i+1);
+                    boolean check = false;
+                    for(int j=i+1;j<io.size();j++){
+                        if(io.get(j).x==p.x || io.get(j).y==p.y){
+                            check=true;
+                            io.add(j+1,p);
+                        }
+                    }
+                }
+                vector[p1.x*2][p1.y*2] = true;
+                vector[p2.x*2][p2.y*2] = true;
+                if(p1.x == p2.x){
+                    vector[p1.x*2][p1.y+p2.y] = true;
+                }else {
+                    vector[p1.x+p2.x][p1.y*2] = true;
+                }
+                //try {
+                //    Thread.sleep(15);
+                //} catch (InterruptedException e) {
+                //    e.printStackTrace();
+                //}
+                h=io.get(i+1).x*2;o=io.get(i+1).y*2;
             }
         }
 

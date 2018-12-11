@@ -129,7 +129,7 @@ public class Prim {
             int x1=aa.get(r).x;
             int y1=aa.get(r).y;
             try {
-                Thread.sleep(100);
+                Thread.sleep(15);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
